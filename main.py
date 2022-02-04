@@ -31,7 +31,8 @@ for i in range(len(os.listdir(truth_path))):
     write_pdf(new, og, changelog, f'{comparsions_folder}/{os.listdir(truth_path)[i][:-4]}.pdf')
     # Stores the Word Error Rate into a vector
     wer_values.append(wer(' '.join(og), ' '.join(new)))
-
+# Plots the Word Error Rates for the different transcript comparsions
+# and saves the image of the plot locally in the comparsions folder
 plt.style.use('fivethirtyeight')
 fig, axs = plt.subplots()
 fig.tight_layout(pad=2)
