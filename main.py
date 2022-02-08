@@ -13,8 +13,6 @@ ap.add_argument('-i', '--input_path', required=False,
 ap.add_argument('-t', '--truth_path', required=False,
  help = 'Path to the folder contaning the transcriptions to be used as reference.')
 args = vars(ap.parse_args())
-
-print(args['input_path'], args['truth_path'])
 # Defines the paths to the transcription files
 if args['input_path'] != None:
     input_path = args['input_path']
