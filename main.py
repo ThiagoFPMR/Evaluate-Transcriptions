@@ -1,12 +1,29 @@
 import os
+import string
+import argparse
 import difflib as dl
 from jiwer import wer
 from datetime import datetime
 import matplotlib.pyplot as plt
 from write_pdf import write_pdf
+
+ap = argparse.ArgumentParser()
+ap.add_argument('-i', '--input_path', required=False,
+ help = 'Path to the folder contaning the transcriptions to be compared.')
+ap.add_argument('-t', '--truth_path', required=False,
+ help = 'Path to the folder contaning the transcriptions to be used as reference.')
+args = vars(ap.parse_args())
+
+print(args['input_path'], args['truth_path'])
 # Defines the paths to the transcription files
-truth_path = 'transcriptions/original'
-input_path = 'transcriptions/generated'
+if args['input_path'] != None:
+    input_path = args['input_path']
+else:
+    input_path = 'transcriptions/generated'
+if args['truth_path'] != None:
+    truth_path = args['truth_path']
+else:
+    truth_path = 'transcriptions/original'
 # Uses the current time to create a unique folder to store the output of the program
 now = datetime.now()
 current_time = now.strftime('%Y-%m-%d-%H-%M-%S')
@@ -21,14 +38,14 @@ for i in range(len(os.listdir(truth_path))):
     input = f'{input_path}/{os.listdir(input_path)[i]}'
     # Opens the files and stores them into variables
     with open(truth) as file:
-        og = file.read().lower().translate(str.maketrans('', '', str.punctuation)).split()
+        og = file.read().lower().translate(str.maketrans('', '', string.punctuation)).split()
     with open(input) as file:
-        new = file.read().lower().translate(str.maketrans('', '', str.punctuation)).split()
+        new = file.read().lower().translate(str.maketrans('', '', string.punctuation)).split()
     # Calculates the series of operations necessary to turn 'new' into 'og
     seq_matcher = dl.SequenceMatcher(None, new, og)
     changelog = seq_matcher.get_opcodes()
     # Creates a pdf file comparing the two strings and the changes necessary to turn one into another
-    write_pdf(new, og, changelog, f'{comparsions_folder}/{os.listdir(truth_path)[i][:-4]}.pdf')
+    write_pdf(new, og, changelog, f'{comparsions_folder}/{os.listdir(input_path)[i][:-4]}.pdf')
     # Stores the Word Error Rate into a vector
     wer_values.append(wer(' '.join(og), ' '.join(new)))
 # Plots the Word Error Rates for the different transcript comparsions
