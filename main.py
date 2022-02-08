@@ -1,4 +1,5 @@
 import os
+import string
 import difflib as dl
 from jiwer import wer
 from datetime import datetime
@@ -21,9 +22,9 @@ for i in range(len(os.listdir(truth_path))):
     input = f'{input_path}/{os.listdir(input_path)[i]}'
     # Opens the files and stores them into variables
     with open(truth) as file:
-        og = file.read().split()
+        og = file.read().lower().translate(str.maketrans('', '', string.punctuation)).split()
     with open(input) as file:
-        new = file.read().split()
+        new = file.read().lower().translate(str.maketrans('', '', string.punctuation)).split()
     # Calculates the series of operations necessary to turn 'new' into 'og
     seq_matcher = dl.SequenceMatcher(None, new, og)
     changelog = seq_matcher.get_opcodes()
