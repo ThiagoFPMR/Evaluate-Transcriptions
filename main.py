@@ -6,7 +6,7 @@ from jiwer import wer
 from datetime import datetime
 import matplotlib.pyplot as plt
 from write_pdf import write_pdf
-
+# Defines command line arguments to be accepted
 ap = argparse.ArgumentParser()
 ap.add_argument('-i', '--input_path', required=False,
  help = 'Path to the folder contaning the transcriptions to be compared.')
