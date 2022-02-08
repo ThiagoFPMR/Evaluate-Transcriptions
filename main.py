@@ -49,9 +49,9 @@ for i in range(len(os.listdir(truth_path))):
 # Plots the Word Error Rates for the different transcript comparsions
 # and saves the image of the plot locally in the comparsions folder
 plt.style.use('fivethirtyeight')
-fig, axs = plt.subplots()
-fig.tight_layout(pad=2)
-axs.set_title("WER")
-axs.bar([c[:-4] for c in os.listdir(comparsions_folder)], wer_values)
+plt.title("WER")
+plt.bar([c[:-4] for c in os.listdir(comparsions_folder)], wer_values)
+plt.xticks([label[:-4] for label in os.listdir(input_path)], rotation=90)
+plt.tight_layout()
 plt.savefig(f'{comparsions_folder}/wer.jpg')
 
